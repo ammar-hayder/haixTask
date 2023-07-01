@@ -3,37 +3,43 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SentimentComponent from "./components/SentimentComponent";
 import HashtagsComponent from "./components/HashtagsComponent";
 import "./styles.css";
+
+interface Tabs{
+  hashtags: boolean,
+  sentiment: boolean
+}
 const GraphComponent: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string>("tab1");
+  const [activeTab, setActiveTab] = useState<Tabs>({
+    hashtags: false,
+    sentiment: false
+  });
   //  Functions to handle Tab Switching
-  const handleTab1 = () => {
-    // update the state to tab1
-    setActiveTab("tab1");
-  };
-  const handleTab2 = () => {
-    // update the state to tab2
-    setActiveTab("tab2");
+  const handleTab = (tab: keyof Tabs) => {
+    setActiveTab((prevState) => ({
+      ...prevState,
+      [tab]: !prevState[tab],
+    }));
   };
   return (
     <div className="App">
       <div className="Tabs">
         <ul className="nav">
           <li
-            className={activeTab === "tab1" ? "active" : ""}
-            onClick={handleTab1}
+            className={activeTab.sentiment ? "active" : ""}
+            onClick={()=>handleTab('sentiment')}
           >
             Sentiment
           </li>
           <li
-            className={activeTab === "tab2" ? "active" : ""}
-            onClick={handleTab2}
+            className={activeTab.hashtags ? "active" : ""}
+            onClick={()=>handleTab('hashtags')}
           >
             Hashtags
           </li>
         </ul>
         <div className="outlet">
-          {activeTab === "tab1" && <SentimentComponent />}
-          {activeTab === "tab2" && <HashtagsComponent />}
+          {activeTab.sentiment && <SentimentComponent />}
+          {activeTab.hashtags && <HashtagsComponent />}
         </div>
       </div>
     </div>

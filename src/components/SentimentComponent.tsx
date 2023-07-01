@@ -1,16 +1,13 @@
 import React from "react";
 import Plot from "react-plotly.js";
 import { useQuery } from "@tanstack/react-query";
-import { Data, fetchData } from "../utils";
+import { fetchSentiment } from "../utils";
+import { SentimentDataType } from "../sentiment.dummy";
 
-interface PlotData {
-  x: string[];
-  y: number[];
-}
 const SentimentComponent: React.FC = () => {
-  const { isLoading, error, data } = useQuery<Data>({
+  const { isLoading, error, data } = useQuery<SentimentDataType>({
     queryKey: ["sentimentQuery"],
-    queryFn: () => fetchData("sentimentData"),
+    queryFn: fetchSentiment,
     staleTime: 5000,
   });
 
@@ -20,24 +17,54 @@ const SentimentComponent: React.FC = () => {
   if (error || !data) {
     return <div>Error fetching data</div>;
   }
-  // Assuming `data` is of type `Data` and has `x` and `y` properties as arrays
-  const plotData: PlotData = {
-    x: data.x,
-    y: data.y,
-  };
 
   return (
     <div className="SecondTab">
       <Plot
         data={[
           {
-            ...plotData,
-            type: "bar",
-            mode: "lines+markers",
+            ...data.meanData,
+            type: "scatter",
+            mode: "lines",
+            name: "Average Sentiment",
             marker: { color: "blue" },
           },
         ]}
-        layout={{ title: "Sentiment Data" }}
+        layout={{
+          width: 600,
+          height: 320,
+          title: "Average Sentiment Timeline",
+        }}
+      />{" "}
+      <Plot
+        data={[
+          {
+            ...data.positiveComments,
+            type: "bar",
+            mode: "lines+markers",
+            name: "Positive",
+            marker: { color: "green" },
+          },
+          {
+            ...data.negativeComments,
+            type: "bar",
+            mode: "lines+markers",
+            name: "Negative",
+            marker: { color: "red" },
+          },
+          {
+            ...data.neutralComments,
+            type: "bar",
+            mode: "lines+markers",
+            name: "Neutral",
+            marker: { color: "yellow" },
+          },
+        ]}
+        layout={{
+          width: 600,
+          height: 320,
+          title: "Sentiment Category Timeline",
+        }}
       />
     </div>
   );

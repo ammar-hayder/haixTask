@@ -1,17 +1,14 @@
 import React from "react";
-import Plot from "react-plotly.js";
+import Plot, { PlotParams } from "react-plotly.js";
 import { useQuery } from "@tanstack/react-query";
-import { fetchData, Data } from "../utils"; // Assuming fetchData returns a Promise<Data>
-
-interface PlotData {
-  x: string[];
-  y: number[];
-}
+import { fetchHashtags } from "../utils";
+import { HashTagsDataType } from "../hashtags.dummy";
+import * as Plotly from "plotly.js";
 
 const HashtagsComponent: React.FC = () => {
-  const { isLoading, error, data } = useQuery<Data>({
-    queryKey: ["hashtagsQuery"],
-    queryFn: () => fetchData("hashtagsData"),
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["hashtagsKey"],
+    queryFn: fetchHashtags,
   });
 
   if (isLoading) {
@@ -22,23 +19,23 @@ const HashtagsComponent: React.FC = () => {
   }
 
   // Assuming `data` is of type `Data` and has `x` and `y` properties as arrays
-  const plotData: PlotData = {
-    x: data.x,
-    y: data.y,
-  };
-  
+  const Data: Plotly.Data[] = [];
+  Object.keys(data).forEach((e: keyof HashTagsDataType) => {
+    Data.push({
+      x: data[e].x,
+      y: data[e].y,
+      mode: "markers",
+      name: e as string,
+      marker: {
+        size: [20],
+      },
+    });
+  });
   return (
     <div className="SecondTab">
       <Plot
-        data={[
-          {
-            ...plotData,
-            type: "scatter",
-            mode: "lines+markers",
-            marker: { color: "blue" },
-          },
-        ]}
-        layout={{ title: "Hashtags Data" }}
+        data={[...Data]}
+        layout={{ width: 600, height: 400, title: "Hashtags Data" }}
       />
     </div>
   );

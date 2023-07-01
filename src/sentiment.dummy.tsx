@@ -1287,14 +1287,36 @@ const SentimentData = [
     startDate: "2023-03-21",
   },
 ];
-let x: string[] = [];
-let y: number[] = [];
-SentimentData.forEach((e) => {
-  x.push(e.date);
-  y.push(e.total);
-});
 
-export default {
-  x,
-  y,
+
+interface Graph {
+  x: string[];
+  y: number[];
+}
+export interface SentimentDataType {
+  meanData: Graph;
+  positiveComments: Graph;
+  negativeComments: Graph;
+  neutralComments: Graph;
+}
+let meanData: Graph = { x: [], y: [] };
+let positiveComments: Graph = { x: [], y: [] };
+let neutralComments: Graph = { x: [], y: [] };
+let negativeComments: Graph = { x: [], y: [] };
+SentimentData.forEach((e) => {
+  meanData.x.push(e.date);
+  meanData.y.push(e.meanSentiment);
+  positiveComments.x.push(e.date);
+  positiveComments.y.push(e.sentimentAsCategories.positiveComments);
+  neutralComments.x.push(e.date);
+  neutralComments.y.push(e.sentimentAsCategories.neutralComments);
+  negativeComments.x.push(e.date);
+  negativeComments.y.push(e.sentimentAsCategories.negativeComments);
+});
+const Sentiments: SentimentDataType = {
+  meanData,
+  positiveComments,
+  neutralComments,
+  negativeComments,
 };
+export default Sentiments;
