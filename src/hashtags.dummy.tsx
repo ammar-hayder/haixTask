@@ -22092,12 +22092,14 @@ const HashtagsData = [
           }
         ];
 
-
-const HashtagsDataCords = HashtagsData.map((e) => {
-  return {
-    x: e.date,
-    y: e.total,
-  };
+let x: string[] = []
+let y: number[] = []; 
+HashtagsData.forEach((e) => {
+  x.push(e.date);
+  y.push(e.total)
 });
 
-export default HashtagsDataCords;
+export default {
+  x,
+  y
+};

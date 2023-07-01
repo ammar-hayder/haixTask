@@ -1,4 +1,3 @@
-
 const SentimentData = [
   {
     total: 22,
@@ -1288,11 +1287,14 @@ const SentimentData = [
     startDate: "2023-03-21",
   },
 ];
-
-const SentimentDataCords = SentimentData.map((d) => {
-  return {
-    x: d.date,
-    y: d.total,
-  };
+let x: string[] = [];
+let y: number[] = [];
+SentimentData.forEach((e) => {
+  x.push(e.date);
+  y.push(e.total);
 });
-export default SentimentDataCords;
+
+export default {
+  x,
+  y,
+};
