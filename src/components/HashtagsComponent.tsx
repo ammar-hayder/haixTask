@@ -26,7 +26,7 @@ const HashtagsComponent: React.FC = () => {
     x: data.x,
     y: data.y,
   };
-  console.log(data);
+  
   return (
     <div className="SecondTab">
       <Plot

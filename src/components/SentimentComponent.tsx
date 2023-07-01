@@ -20,7 +20,6 @@ const SentimentComponent: React.FC = () => {
   if (error || !data) {
     return <div>Error fetching data</div>;
   }
-  console.log(data);
   // Assuming `data` is of type `Data` and has `x` and `y` properties as arrays
   const plotData: PlotData = {
     x: data.x,
