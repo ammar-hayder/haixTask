@@ -5,7 +5,7 @@ import { fetchData } from "../utils";
 const HashtagsComponent: React.FC = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["fetchSentimentDummy"],
-    queryFn: () => fetchData("hashtagsData")
+    queryFn: () => fetchData("hashtagsData"),
   });
 
   if (isLoading) {
@@ -14,19 +14,20 @@ const HashtagsComponent: React.FC = () => {
   if (error) {
     return <div>Error fetching data</div>;
   }
-
   return (
-    <Plot
-      data={[
-        {
-          x: data.x,
-          y: data.y,
-          type: "line",
-          marker: { color: "green" }
-        }
-      ]}
-      layout={{ title: "Hashtags Data" }}
-    />
+    <div className="SecondTab">
+      <Plot
+        data={[
+          {
+            x: data?.x,
+            y: data?.y,
+            type: "line",
+            marker: { color: "green" },
+          },
+        ]}
+        layout={{ title: "Hashtags Data" }}
+      />
+    </div>
   );
 };
 export default HashtagsComponent;

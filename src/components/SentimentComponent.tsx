@@ -5,7 +5,7 @@ import { fetchData } from "../utils";
 const SentimentComponent: React.FC = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["fetchHashtagsDummy"],
-    queryFn: () => fetchData("sentimentData")
+    queryFn: () => fetchData("sentimentData"),
   });
 
   if (isLoading) {
@@ -16,18 +16,20 @@ const SentimentComponent: React.FC = () => {
     return <div>Error fetching data</div>;
   }
   return (
-    <Plot
-      data={[
-        {
-          x: data.x,
-          y: data.y,
-          type: "bar",
-          mode: "lines+markers",
-          marker: { color: "blue" }
-        }
-      ]}
-      layout={{ title: "Sentiment Data" }}
-    />
+    <div className="FirstTab">
+      <Plot
+        data={[
+          {
+            x: data?.x,
+            y: data?.y,
+            type: "bar",
+            mode: "lines+markers",
+            marker: { color: "blue" },
+          },
+        ]}
+        layout={{ title: "Sentiment Data" }}
+      />
+    </div>
   );
 };
 
