@@ -2,13 +2,14 @@ import SentimentData from "./sentiment.dummy";
 import HashtagsData from "./hashtags.dummy";
 
 // Define the dummy API data response
-export interface PlotData {
+export interface Data {
   x: string[];
   y: number[];
 }
-interface DummyData {
-  sentmentData : PlotData[];
-  hashtagsData: PlotData[];
+
+export interface DummyData {
+  sentimentData: Data;
+  hashtagsData: Data;
 }
 const dummyData: DummyData = {
   sentimentData: SentimentData,
